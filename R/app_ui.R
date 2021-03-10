@@ -10,7 +10,21 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic 
     fluidPage(
-      h1("ancaptcha")
+      shiny::h1("ancaptcha"),
+      shiny::sidebarLayout(
+        sidebarPanel = shiny::sidebarPanel(
+          shiny::fileInput(
+            "captcha_file", 
+            label = "Arquivo", 
+            accept = "image/*"
+          )
+        ),
+        mainPanel = shiny::mainPanel(
+          shiny::plotOutput("captcha_img"),
+          shiny::textInput("label", "Label"),
+          shiny::actionButton("salvar", "Salvar!")
+        )
+      )
     )
   )
 }
@@ -34,9 +48,12 @@ golem_add_external_resources <- function(){
     bundle_resources(
       path = app_sys('app/www'),
       app_title = 'ancaptcha'
-    )
+    ),
+    shinyalert::useShinyalert()
+    
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert() 
   )
+  
 }
 
